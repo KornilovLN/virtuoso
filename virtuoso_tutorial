@@ -1,0 +1,186 @@
+* Перейдите на вкладку Web Services и выберите подвкладку SOAP services.
+* В разделе WSDL Compliant Services щелкните ссылку учебника SO-S-6.
+* Настройте базу данных и инициализируйте учебник, нажав на ссылку «Установить начальное состояние»
+  встолбце   Action рядом с файлом sq_s_6.sql.
+* Выполните программу so_s_6_sample1.vsp, нажав на ссылку run.
+  Выполнение программы будет показано на вкладке Run.
+* В появившейся форме Select Service отметьте опцию get_order
+  и нажмите на кнопку Continue, как показано на рисунке 7.
+* Введите «ID заказа» в форме «Введите данные» и нажмите кнопку «Вызов».
+  ID заказа может быть любым числовым значением от 10248 до максимального значения 11079.
+* Будет отображен результирующий SOAP-ответ от SOAP-вызова.11
+
+input ID: 11000
+```
+SOAP response:
+<Order OrderID="11000" CustomerID="RATTC" EmployeeID="2" OrderDate="1996-05-06 00:00:00" RequiredDate="1996-06-03 00:00:00" ShippedDate="1996-05-14 00:00:00" ShipVia="3" Freight="55.12" ShipName="Rattlesnake Canyon Grocery" ShipAddress="2817 Milton Dr." ShipCity="Albuquerque" ShipRegion="NM" ShipPostalCode="87110" ShipCountry="United States" ShipCountryCode="us" ROWGUID="52133650-3B9C-11EA-B11F-DBF410C84CF6">
+<OrderLine OrderID="11000" ProductID="4" UnitPrice="22" Quantity="25" Discount="0.25">
+</OrderLine>
+<OrderLine OrderID="11000" ProductID="24" UnitPrice="4.5" Quantity="30" Discount="0.25">
+</OrderLine>
+<OrderLine OrderID="11000" ProductID="77" UnitPrice="13" Quantity="30" Discount="0">
+</OrderLine>
+</Order>
+```
+
+Архитектура веб-сервисов
+
+Поставщики услуг развертывают и публикуют услуги, регистрируя их у сервисного брокера.
+Запрашивающие услуги находят услуги путем поиска в реестре опубликованных услуг брокера услуг.
+Запросители услуг связываются с поставщиком услуг и используют доступные услуги.
+
+Использование технологий
+
+В мире веб-сервисов каждая из этих трех операций включает три взаимодополняющие, но разные технологии:
+
+Публикация служб использует API Universal Description, Discovery and Integration (UDDI).
+Поиск служб использует комбинацию UDDI и языка описания веб-служб (WSDL).
+Привязка к сервисам использует WSDL и простой протокол доступа к объектам (SOAP).
+
+На самом базовом уровне операция связывания является самой важной из трех.
+
+
+Пример
+
+В примере будет создан интерфейс на основе SOAP и WSDL-описание для поиска существующего заказа клиента.
+В демонстрационную базу данных можно добавлять новые заказы.
+На первой странице WSDL отображается в виде HTML-формы для выбора метода SOAP.
+Вторая страница снова отображает WSDL, чтобы сделать форму для ввода параметров. Обратите внимание, что на этой форме ввода необходимо ввести действительные _CustomerID (например, ALFKI) и _ProductID (например, 1). В противном случае сервис выдаст сообщение SOAP Fault. Также необходимо ввести правильное значение _ShipVia (например, 1,2 или 3).
+На последней странице отображается результат вызова SOAP.
+
+#========================================================================================================
+
+Пояснения cody:
+
+
+Что такое SOAP response?
+
+
+
+GPT-4o
+SOAP (Simple Object Access Protocol) — это протокол обмена сообщениями, который используется для обмена структурированными информационными сообщениями в распределенных вычислительных средах. SOAP сообщения обычно используются для взаимодействия между веб-сервисами и клиентами.
+
+SOAP Response
+SOAP response — это ответное сообщение, которое веб-сервис отправляет клиенту в ответ на SOAP request. SOAP response, как и SOAP request, представляет собой XML-документ, который содержит данные, возвращаемые веб-сервисом.
+
+Структура SOAP Response
+SOAP response состоит из следующих основных частей:
+
+Envelope: Корневой элемент, который определяет начало и конец сообщения. Он содержит два подэлемента: Header и Body.
+Header: (Необязательный) Элемент, который может содержать метаинформацию о сообщении, такую как информация о безопасности, транзакциях и т.д.
+Body: Элемент, который содержит фактические данные ответа. В случае успешного выполнения запроса, Body будет содержать результат выполнения. В случае ошибки, Body будет содержать информацию об ошибке.
+Пример SOAP Response
+Вот пример SOAP response, который возвращает результат успешного выполнения запроса:
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://example.com/namespace">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:MyResponse>
+         <ns:Result>Success</ns:Result>
+         <ns:Data>
+            <ns:Item>Item1</ns:Item>
+            <ns:Item>Item2</ns:Item>
+         </ns:Data>
+      </ns:MyResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+Copy
+
+Apply
+
+Пример SOAP Response с ошибкой
+Вот пример SOAP response, который возвращает информацию об ошибке:
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <soapenv:Fault>
+         <faultcode>soapenv:Client</faultcode>
+         <faultstring>Invalid request</faultstring>
+         <detail>
+            <errorcode>400</errorcode>
+            <errormessage>Bad Request</errormessage>
+         </detail>
+      </soapenv:Fault>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+Copy
+
+Apply
+
+Заключение
+SOAP response — это XML-документ, который веб-сервис отправляет клиенту в ответ на SOAP request. Он содержит данные, возвращаемые веб-сервисом, или информацию об ошибке, если запрос не был выполнен успешно. SOAP response состоит из элементов Envelope, Header и Body, где Body содержит основное содержимое ответа.
+
+Try again with different context
+Add context...
+Avatar for ln.kornilovstar-vtxcm
+ln.kornilovstar
+А как выглядел при этом soap запрос?
+
+
+
+GPT-4o
+SOAP запрос (SOAP request) — это XML-документ, который клиент отправляет веб-сервису для выполнения определенного действия или запроса данных. Давайте рассмотрим пример SOAP запроса, который соответствует приведенному ранее примеру SOAP ответа.
+
+Пример SOAP Request
+Предположим, что у нас есть веб-сервис, который предоставляет информацию о товарах. SOAP запрос может выглядеть следующим образом:
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://example.com/namespace">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:MyRequest>
+         <ns:RequestParameter>SomeValue</ns:RequestParameter>
+      </ns:MyRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+Copy
+
+Apply
+
+Объяснение структуры SOAP Request
+Envelope: Корневой элемент, который определяет начало и конец сообщения. Он содержит два подэлемента: Header и Body.
+Header: (Необязательный) Элемент, который может содержать метаинформацию о сообщении, такую как информация о безопасности, транзакциях и т.д.
+Body: Элемент, который содержит фактические данные запроса. В данном случае, это элемент MyRequest с параметром RequestParameter.
+Пример SOAP Request для приведенного ранее SOAP Response
+Если мы хотим получить данные, которые были возвращены в примере SOAP ответа, наш SOAP запрос может выглядеть следующим образом:
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://example.com/namespace">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:GetItemsRequest>
+         <ns:Category>Electronics</ns:Category>
+      </ns:GetItemsRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+Copy
+
+Apply
+
+Объяснение примера
+Envelope: Корневой элемент, который определяет начало и конец сообщения.
+Header: В данном примере пустой, но может содержать метаинформацию.
+Body: Содержит элемент GetItemsRequest с параметром Category, который указывает категорию товаров, которые мы хотим получить.
+Пример SOAP Request с ошибкой
+Если запрос содержит ошибку, например, отсутствует обязательный параметр, SOAP запрос может выглядеть следующим образом:
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://example.com/namespace">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ns:GetItemsRequest>
+         <!-- Отсутствует обязательный параметр Category -->
+      </ns:GetItemsRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+Copy
+
+Apply
+
+В этом случае веб-сервис может вернуть SOAP ответ с ошибкой, как было показано ранее.
+
+Заключение
+SOAP запрос — это XML-документ, который клиент отправляет веб-сервису для выполнения определенного действия или запроса данных. Он состоит из элементов Envelope, Header и Body, где Body содержит основное содержимое запроса. Примеры SOAP запросов могут варьироваться в зависимости от конкретного веб-сервиса и его требований.

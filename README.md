@@ -12,3 +12,5 @@
 * Стартовать файл rebuild.sh, если рабочего образа еще нет.
 * start_virtuoso.sh
 * Войти в браузере на localhost:8890 
+
+#### Вход в tutorial, как указано в документе virtuoso_tutorial
